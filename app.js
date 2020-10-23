@@ -29,7 +29,6 @@ const Header = (props) => {
     </header>
   );
 }
-
 const Player = (props) => {
   return (
     <div className="player">
@@ -37,21 +36,35 @@ const Player = (props) => {
         { props.name }
       </span>
 
-      <Counter score={props.score} />
+      {/* <Counter score={props.score} /> */}
+      <Counter />
     </div>
   );
-}
+} 
 
 //display dynamically scores numbers
 class Counter extends React.Component {
+  //score state
+  // constructor(){
+  //   super()
+  //   //name of the object must be:state 
+  //   this.state = {
+  //     //initial state
+  //     score:0
+  //   };
+  // }
+  state = {
+    score: 0
+  };
   render() { //method
     return (
       <div className="counter">
         <button className="counter-action decrement"> - </button>
-        <span className="counter-score">{ props.score }</span>
+        {/* <span className="counter-score">{ this.props.score }</span> {/*this refer to the component(Counter) instance*/ }
+        <span className="counter-score">{ this.state.score }</span>
         <button className="counter-action increment"> + </button>
       </div>
-    )
+    );
   }
 }
 
@@ -67,7 +80,7 @@ const App = (props) => {
       {props.initialPlayers.map( player =>
         <Player 
           name={player.name}
-          score={player.score}
+          // score={player.score}
           key={player.id.toString()}            
         />
       )}
