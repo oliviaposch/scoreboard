@@ -59,7 +59,8 @@ class Counter extends React.Component {
   //making counter interactive
   // score changes when the user clicks the plus or minus button
   //giving our buttons click event listener
-  incrementStore() {
+ /* incrementScore() {  */
+  incrementScore = () => { //converted in arrow function
     //update a component state
     this.setState({
       score: this.state.score + 1
@@ -69,15 +70,21 @@ class Counter extends React.Component {
     //console.log(this); //refer our properties in our Counter class
 
   }
+  decrementScore = () => {
+    this.setState({
+      score: this.state.score - 1
+    });
+  }
   render() { //method
     //console.log(this);//refer our counter Class
     return (
       <div className="counter">
-        <button className="counter-action decrement"> - </button>
+        <button className="counter-action decrement" onClick={this.decrementScore}> - </button>
         {/* <span className="counter-score">{ this.props.score }</span> {/*this refer to the component(Counter) instance*/ }
         <span className="counter-score">{ this.state.score }</span>
-       {/*  <button className="counter-action increment" onClick={this.incrementStore.bind(this)}> + </button> */}
-        <button className="counter-action increment" onClick={() => this.incrementStore()}> + </button>
+       {/*  <button className="counter-action increment" onClick={this.incrementScore.bind(this)}> + </button> */}
+        {/* <button className="counter-action increment" onClick={() => this.incrementScore()}> + </button> */}
+        <button className="counter-action increment" onClick={this.incrementScore}> + </button>
       </div>
     );
   }
