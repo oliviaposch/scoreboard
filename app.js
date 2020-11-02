@@ -1,25 +1,25 @@
-const players = [
-  {
-    name: "Guil",
-    score: 50,
-    id: 1
-  },
-  {
-    name: "Treasure",
-    score: 85,
-    id: 2
-  },
-  {
-    name: "Ashley",
-    score: 95,
-    id: 3
-  },
-  {
-    name: "James",
-    score: 80,
-    id: 4
-  }
-];
+// const players = [
+//   {
+//     name: "Guil",
+//     score: 50,
+//     id: 1
+//   },
+//   {
+//     name: "Treasure",
+//     score: 85,
+//     id: 2
+//   },
+//   {
+//     name: "Ashley",
+//     score: 95,
+//     id: 3
+//   },
+//   {
+//     name: "James",
+//     score: 80,
+//     id: 4
+//   }
+// ];
 
 const Header = (props) => {
   return (
@@ -30,9 +30,11 @@ const Header = (props) => {
   );
 }
 const Player = (props) => {
+  //console.log(props.removePlayer);
   return (
     <div className="player">
       <span className="player-name">
+      <button className="remove-player" onClick={ () => props.removePlayer(props.id) }>✖</button>
         { props.name }
       </span>
 
@@ -43,7 +45,7 @@ const Player = (props) => {
 } 
 
 //display dynamically scores numbers
-class Counter extends React.Component {
+class Counter extends React.Component { //local component state
   //score state
   // constructor(){
   //   super()
@@ -62,8 +64,11 @@ class Counter extends React.Component {
  /* incrementScore() {  */
   incrementScore = () => { //converted in arrow function
     //update a component state
-    this.setState({
-      score: this.state.score + 1
+    // this.setState({
+    this.setState( prevState => {
+      return {
+        score: prevState.score + 1
+      }
     });
 
     //console.log('Hi, from inside increment score!');
@@ -71,8 +76,10 @@ class Counter extends React.Component {
 
   }
   decrementScore = () => {
-    this.setState({
-      score: this.state.score - 1
+    this.setState( prevState => { //prevState -> callbackfunction parameter
+      return {
+        score: prevState.score - 1
+      }
     });
   }
   render() { //method
@@ -90,27 +97,64 @@ class Counter extends React.Component {
   }
 }
 
-const App = (props) => {
-  return (
-    <div className="scoreboard">
-      <Header 
-        title="Scoreboard" 
-        totalPlayers={props.initialPlayers.length} 
-      />
+// const App = (props) => {
+class App extends React.Component {
 
-      {/* Players list */}
-      {props.initialPlayers.map( player =>
-        <Player 
-          name={player.name}
-          // score={player.score}
-          key={player.id.toString()}            
+  state = { // initial state data 
+    players: [
+      {
+        name: "Guil",
+        id: 1
+      },
+      {
+        name: "Treasure",
+        id: 2
+      },
+      {
+        name: "Ashley",
+        id: 3
+      },
+      {
+        name: "James",
+        id: 4
+      }
+    ]
+  }
+  //arrow function with id parameter
+  handleRemovePlayer = (id) => {
+    this.setState( prevState => {
+      return { //return the updated player state
+        players: prevState.players.filter(p => p.id !== id ) //like de Map,filtertakes a callback func. 
+      }
+    })
+  }
+  render() {
+    return (
+      <div className="scoreboard">
+        <Header 
+          title="Scoreboard" 
+          totalPlayers={this.state.players.length} 
         />
-      )}
-    </div>
-  );
+  
+        {/* Players list */}
+        {this.state.players.map( player =>
+          <Player 
+            name={player.name}
+            //prop named id to know which player to remove
+            id={player.id}
+            // score={player.score}
+            key={player.id.toString()}  
+            //supply the handleRemovePlayer func. to the player component
+            removePlayer={this.handleRemovePlayer}         
+          />
+        )}
+      </div>
+    );
+  }
+  
 }
 
 ReactDOM.render(
-  <App initialPlayers={players} />,
+  <App />,
   document.getElementById('root')
 );
